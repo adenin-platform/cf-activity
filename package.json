@@ -3,11 +3,14 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/adenin-platform/cf-logger"
+  },
+  "bugs": {
+    "url": "https://github.com/adenin-platform/cf-logger/issues"
   },
   "author": "olliejm",
-  "license": "ISC",
   "dependencies": {
     "@adenin/cf-logger": "^1.4.0"
   }
