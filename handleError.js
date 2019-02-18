@@ -2,7 +2,14 @@
 
 const logger = require('@adenin/cf-logger');
 
-module.exports = (error, activity) => {
+/**
+ * logs the error and generates generic error response
+ * @param {object} activity - the activity context
+ * @param {error} error - the JavaScript error object
+ */
+
+module.exports = (activity, error) => {
+
     logger.error(error);
 
     let m = error.message;
