@@ -5,10 +5,10 @@
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/adenin-platform/cf-logger"
+    "url": "https://github.com/adenin-platform/cf-activity"
   },
   "bugs": {
-    "url": "https://github.com/adenin-platform/cf-logger/issues"
+    "url": "https://github.com/adenin-platform/cf-activity/issues"
   },
   "author": "olliejm",
   "dependencies": {
