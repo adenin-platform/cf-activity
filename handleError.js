@@ -9,17 +9,16 @@ const logger = require('@adenin/cf-logger');
  */
 
 module.exports = (activity, error) => {
+  logger.error(error);
 
-    logger.error(error);
+  let m = error.message;
 
-    let m = error.message;
+  if (error.stack) {
+    m = m + ': ' + error.stack;
+  }
 
-    if (error.stack) {
-        m = m + ': ' + error.stack;
-    }
-
-    activity.Response.ErrorCode = (error.response && error.response.statusCode) || 500;
-    activity.Response.Data = {
-        ErrorText: m
-    };
+  activity.Response.ErrorCode = (error.response && error.response.statusCode) || 500;
+  activity.Response.Data = {
+    ErrorText: m
+  };
 };

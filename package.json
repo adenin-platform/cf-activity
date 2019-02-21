@@ -12,6 +12,6 @@
   },
   "author": "olliejm",
   "dependencies": {
-    "@adenin/cf-logger": "^1.4.0"
+    "@adenin/cf-logger": "^1.5.1"
   }
 }

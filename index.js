@@ -1,6 +1,6 @@
 'use strict';
 
 module.exports = {
-    handleError: require('./handleError'),
-    isResponseOk: require('./isResponseOk')
+  handleError: require('./handleError'),
+  isResponseOk: require('./isResponseOk')
 };
