@@ -10,7 +10,7 @@ const logger = require('@adenin/cf-logger');
 
 module.exports = (activity, response) => {
   if (response && response.statusCode === 200) {
-    return;
+    return true;
   }
 
   // server did not return status 200
@@ -20,4 +20,6 @@ module.exports = (activity, response) => {
   };
 
   logger.error(activity.Response.Data.ErrorText);
+
+  return false;
 };
