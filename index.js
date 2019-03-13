@@ -3,5 +3,6 @@
 module.exports = {
   handleError: require('./handleError'),
   isResponseOk: require('./isResponseOk'),
-  dateRange: require('./dateRange')
+  dateRange: require('./dateRange'),
+  pagination: require('./pagination')
 };
