@@ -14,7 +14,7 @@ module.exports = (activity) => {
   if (nextpage) {
     page = null;
     action = 'nextpage';
-  } else if (activity.Request.Query.page.includes('_nextpage:')) {
+  } else if (activity.Request.Query.page && activity.Request.Query.page.includes('_nextpage:')) {
     const raw = activity.Request.Query.page;
 
     page = null;
@@ -27,7 +27,7 @@ module.exports = (activity) => {
     if (activity.Request.Data.args._nextpage) {
       page = null;
       nextpage = activity.Request.Data.args._nextpage;
-    } else if (activity.Request.Data.args._page.includes('_nextpage:')) {
+    } else if (activity.Request.Query.page && activity.Request.Data.args._page.includes('_nextpage:')) {
       const raw = activity.Request.Data.args._page;
 
       page = null;
