@@ -9,7 +9,18 @@ module.exports = (activity) => {
   let action = 'firstpage';
   let page = parseInt(activity.Request.Query.page, 10) || 1;
   let pageSize = parseInt(activity.Request.Query.pageSize, 10) || 20;
-  let nextpage = null;
+  let nextpage = activity.Request.Query.nextpage;
+
+  if (nextpage) {
+    page = null;
+    action = 'nextpage';
+  } else if (activity.Request.Query.page.includes('_nextpage:')) {
+    const raw = activity.Request.Query.page;
+
+    page = null;
+    nextpage = raw.substring(raw.indexOf(':') + 1, raw.length);
+    action = 'nextpage';
+  }
 
   // nextpage request
   if (activity.Request.Data && activity.Request.Data.args && activity.Request.Data.args.atAgentAction === 'nextpage') {
