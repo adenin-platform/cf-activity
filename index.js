@@ -2,5 +2,7 @@
 
 module.exports = {
   handleError: require('./handleError'),
-  isResponseOk: require('./isResponseOk')
+  isResponseOk: require('./isResponseOk'),
+  dateRange: require('./dateRange'),
+  pagination: require('./pagination')
 };
