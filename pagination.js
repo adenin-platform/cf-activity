@@ -45,7 +45,6 @@ module.exports = (activity) => {
   activity.Response.Data._action = action;
   activity.Response.Data._page = page;
   activity.Response.Data._pageSize = pageSize;
-  activity.Response.Data._nextpage = nextpage;
   activity.Response.Data.items = [];
 
   return {
