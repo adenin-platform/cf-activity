@@ -26,9 +26,7 @@ module.exports = {
     global.Translations = null;
 
     if (fs.existsSync(fname)) {
-      if (process.env.NODE_ENV === 'development') {
-        decache(fname);
-      }
+      if (process.env.NODE_ENV === 'development') decache(fname);
 
       global.Translations = require(fname);
     }
