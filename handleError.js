@@ -1,12 +1,10 @@
 'use strict';
 
-const logger = require('@adenin/cf-logger');
-
 /**
  * logs the error and generates generic error response
  * @param {object} activity - the activity context
  * @param {error} error - the JavaScript error object
- * @param {Number[]} authRequiresStatusCodes - optional array of statusCode recognized as success, default for token based auth [401]
+ * @param {Number[]} authRequiresStatusCodes - optional array of statusCodes for success, default for token auth [401]
  */
 
 module.exports = (activity, error, authRequiresStatusCodes) => {

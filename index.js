@@ -1,11 +1,13 @@
 'use strict';
+
 const path = require('path');
 const fs = require('fs');
+const decache = require('decache');
 
-var handleError = require('./handleError');
-var isResponseOk = require('./isResponseOk');
-var dateRange = require('./dateRange');
-var pagination = require('./pagination');
+const handleError = require('./handleError');
+const isResponseOk = require('./isResponseOk');
+const dateRange = require('./dateRange');
+const pagination = require('./pagination');
 
 module.exports = {
 
@@ -16,14 +18,18 @@ module.exports = {
   pagination: pagination,
 
   makeGlobal: function (activity) {
+    const _activity = activity;
 
-    var _activity = activity;
+    const lang = (activity.Context.UserLocale || 'en-US').split('-');
+    const fname = activity.Context.ScriptFolder + path.sep + 'lang' + path.sep + lang[0] + '.json';
 
-    var lang = (activity.Context.UserLocale || "en-US").split("-");
-    var fname = activity.Context.ScriptFolder + path.sep + 'lang' + path.sep + lang[0] + '.json';
-  
     global.Translations = null;
+
     if (fs.existsSync(fname)) {
+      if (process.env.NODE_ENV === 'development') {
+        decache(fname);
+      }
+
       global.Translations = require(fname);
     }
 
@@ -45,15 +51,9 @@ module.exports = {
       },
 
       isErrorResponse: function (response, successStatusCodes) {
-
         // optional provide list of success status codes
-        if (successStatusCodes === undefined) {
-          successStatusCodes = [200];
-        }
-
-        if (response && successStatusCodes.indexOf(response.statusCode) >= 0) {
-          return false;
-        }
+        if (successStatusCodes === undefined) successStatusCodes = [200];
+        if (response && successStatusCodes.indexOf(response.statusCode) >= 0) return false;
 
         // server did not return successStatusCode
         _activity.Response.ErrorCode = response.statusCode || 500;
@@ -67,30 +67,29 @@ module.exports = {
       }
     };
 
-    global.T = function (key) {
-
+    global.T = function (key, ...args) {
       function _format(format, args) {
-
         // replace {n}
-        var fmt = format.replace(/{(\d+)}/g, function (match, number) {
-          return typeof args[number] != 'undefined' ? args[number] : match;
+        let fmt = format.replace(/{(\d+)}/g, (match, number) => {
+          return typeof args[number] !== 'undefined' ? args[number] : match;
         });
 
         // replace [n]
-        fmt = fmt.replace(/\[(\d+)\]/g, function (match, number) {
-          return typeof args[number] != 'undefined' ? args[number] : match;
+        fmt = fmt.replace(/\[(\d+)\]/g, (match, number) => {
+          return typeof args[number] !== 'undefined' ? args[number] : match;
         });
 
         return fmt;
       }
 
       if (key === null || key === undefined) return key;
-      var args = Array.prototype.slice.call(arguments, 1);
-      var msg = undefined;
-      if (!msg && global.Translations) msg = global.Translations[key]; // check for module specific msg      
+
+      let msg;
+
+      if (!msg && global.Translations) msg = global.Translations[key]; // check for module specific msg
       if (!msg) msg = key; // fallback to key if no msg is available
 
       return _format(msg, args);
-    }
+    };
   }
 };
