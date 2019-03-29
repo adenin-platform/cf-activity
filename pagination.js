@@ -40,17 +40,9 @@ module.exports = (activity) => {
     action = 'nextpage';
   }
 
-  if (page < 0) {
-    page = 1;
-  }
-
-  if (pageSize < 1 || pageSize > 99) {
-    pageSize = 20;
-  }
-
-  if (!activity.Response.Data) {
-    activity.Response.Data = {};
-  }
+  if (page < 0) page = 1;
+  if (pageSize < 1 || pageSize > 99) pageSize = 20;
+  if (!activity.Response.Data) activity.Response.Data = {};
 
   // initialize response
   activity.Response.Data._action = action;

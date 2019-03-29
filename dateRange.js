@@ -8,9 +8,7 @@
 
 module.exports = (activity, defaultRange) => {
   // optional: provide named default range
-  if (defaultRange === undefined) {
-    defaultRange = 'today';
-  }
+  if (defaultRange === undefined) defaultRange = 'today';
 
   // just a PoC - todo: add validation, more ranges, support date only ...
   let start = activity.Request.Query.startDate;
@@ -18,6 +16,7 @@ module.exports = (activity, defaultRange) => {
 
   if (!start || !end || start.length !== 24 || end.length !== 24) {
     const today = new Date();
+
     start = (new Date(today.setHours(0, 0, 0, 0))).toISOString();
     end = (new Date(today.setHours(23, 59, 0, 0))).toISOString();
   }

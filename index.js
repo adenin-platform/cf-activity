@@ -10,13 +10,12 @@ const dateRange = require('./dateRange');
 const pagination = require('./pagination');
 
 module.exports = {
-
   // legacy exports
   handleError: handleError,
   isResponseOk: isResponseOk,
   dateRange: dateRange,
   pagination: pagination,
-
+  // end legacy support
   makeGlobal: function (activity) {
     const _activity = activity;
 
@@ -35,19 +34,15 @@ module.exports = {
       Request: activity.Request,
       Response: activity.Response,
       Context: activity.Context,
-
       pagination: function () {
         return pagination(_activity);
       },
-
       dateRange: function (defaultRange) {
         return dateRange(_activity, defaultRange);
       },
-
       handleError: function (error) {
         return handleError(_activity, error);
       },
-
       isErrorResponse: function (response, successStatusCodes) {
         // optional provide list of success status codes
         if (successStatusCodes === undefined) successStatusCodes = [200];
