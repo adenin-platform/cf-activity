@@ -10,57 +10,52 @@ const dateRange = require('./dateRange');
 const pagination = require('./pagination');
 
 module.exports = {
-  // legacy exports
+  // legacy
   handleError: handleError,
   isResponseOk: isResponseOk,
   dateRange: dateRange,
   pagination: pagination,
-  // end legacy support
-  makeGlobal: function (activity) {
-    const _activity = activity;
+  // end legacy
+  initialize: (_activity) => {
+    const lang = (_activity.Context.UserLocale || 'en-US').split('-');
+    const fname = _activity.Context.ScriptFolder + path.sep + 'lang' + path.sep + lang[0] + '.json';
 
-    const lang = (activity.Context.UserLocale || 'en-US').split('-');
-    const fname = activity.Context.ScriptFolder + path.sep + 'lang' + path.sep + lang[0] + '.json';
-
-    global.Translations = null;
+    _activity.Context.Translations = null;
 
     if (fs.existsSync(fname)) {
       if (process.env.NODE_ENV === 'development') decache(fname);
 
-      global.Translations = require(fname);
+      _activity.Context.Translations = require(fname);
     }
 
-    global.Activity = {
-      Request: activity.Request,
-      Response: activity.Response,
-      Context: activity.Context,
-      pagination: function () {
-        return pagination(_activity);
+    global.$ = {
+      pagination: (activity) => {
+        return pagination(activity)
       },
-      dateRange: function (defaultRange) {
-        return dateRange(_activity, defaultRange);
+      dateRange: (activity, defaultRange) => {
+        return dateRange(activity, defaultRange)
       },
-      handleError: function (error) {
-        return handleError(_activity, error);
+      handleError: (activity, error) => {
+        return handleError(activity, error)
       },
-      isErrorResponse: function (response, successStatusCodes) {
+      isErrorResponse: (activity, response, successStatusCodes) => {
         // optional provide list of success status codes
         if (successStatusCodes === undefined) successStatusCodes = [200];
         if (response && successStatusCodes.indexOf(response.statusCode) >= 0) return false;
 
         // server did not return successStatusCode
-        _activity.Response.ErrorCode = response.statusCode || 500;
-        _activity.Response.Data = {
-          ErrorText: 'request failed with statusCode ' + _activity.Response.ErrorCode
+        activity.Response.ErrorCode = response.statusCode || 500;
+        activity.Response.Data = {
+          ErrorText: 'request failed with statusCode ' + activity.Response.ErrorCode
         };
 
-        logger.error(_activity.Response.Data.ErrorText);
+        logger.error(activity.Response.Data.ErrorText);
 
         return true;
       }
     };
 
-    global.T = function (key, ...args) {
+    global.T = (activity, key, ...args) => {
       function _format(format, args) {
         // replace {n}
         let fmt = format.replace(/{(\d+)}/g, (match, number) => {
@@ -79,7 +74,7 @@ module.exports = {
 
       let msg;
 
-      if (!msg && global.Translations) msg = global.Translations[key]; // check for module specific msg
+      if (!msg && activity.Context.Translations) msg = activity.Context.Translations[key];
       if (!msg) msg = key; // fallback to key if no msg is available
 
       return _format(msg, args);
