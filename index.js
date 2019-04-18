@@ -30,13 +30,13 @@ module.exports = {
 
     global.$ = {
       pagination: (activity) => {
-        return pagination(activity)
+        return pagination(activity);
       },
       dateRange: (activity, defaultRange) => {
-        return dateRange(activity, defaultRange)
+        return dateRange(activity, defaultRange);
       },
       handleError: (activity, error) => {
-        return handleError(activity, error)
+        return handleError(activity, error);
       },
       isErrorResponse: (activity, response, successStatusCodes) => {
         // optional provide list of success status codes
