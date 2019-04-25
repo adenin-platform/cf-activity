@@ -38,6 +38,7 @@ module.exports = {
       handleError: (activity, error) => {
         return handleError(activity, error);
       },
+      compareFunctions: require('./compareFunctions'),
       isErrorResponse: (activity, response, successStatusCodes) => {
         // optional provide list of success status codes
         if (successStatusCodes === undefined) successStatusCodes = [200];
