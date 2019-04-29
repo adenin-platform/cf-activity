@@ -1,8 +1,11 @@
 'use strict';
 
+/**
+* Compare functions for sorting object arrays
+*/
 module.exports = {
   /**
-  * sorts two items by date, oldest first. Expects both to have a property 'date' with valid date string
+  * Sorts two items by date, oldest first. Expects both to have a property 'date' with valid date string
   * @param {Object} a - the first item to compare
   * @param {Object} b - the second item to compare
   */
@@ -13,7 +16,7 @@ module.exports = {
     return a < b ? -1 : (a > b ? 1 : 0);
   },
   /**
-  * sorts two items by date, newest first. Expects both to have a property 'date' with valid date string
+  * Sorts two items by date, newest first. Expects both to have a property 'date' with valid date string
   * @param {Object} a - the first item to compare
   * @param {Object} b - the second item to compare
   */

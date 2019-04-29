@@ -3,6 +3,7 @@
 const path = require('path');
 const fs = require('fs');
 const decache = require('decache');
+const tunnel = require('tunnel');
 
 const handleError = require('./handleError');
 const isResponseOk = require('./isResponseOk');
@@ -28,6 +29,28 @@ module.exports = {
       _activity.Context.Translations = require(fname);
     }
 
+    const proxySettings = _activity.Context.ProxyServer;
+
+    if (proxySettings.EnableProxyServer) {
+      const proxy = {
+        host: proxySettings.host
+      };
+
+      if (proxySettings.port) proxy.port = proxySettings.port;
+
+      if (proxySettings.username && proxySettings.password) {
+        proxy.proxyAuth = `${proxySettings.username}:${proxySettings.password}`;
+      } else if (proxySettings.username) {
+        proxy.proxyAuth = proxySettings.username;
+      } else if (proxySettings.password) {
+        proxy.proxyAuth = proxySettings.password;
+      }
+
+      _activity.Context.ProxyServer.agent = tunnel.httpsOverHttp({
+        proxy: proxy
+      });
+    }
+
     global.$ = {
       pagination: (activity) => {
         return pagination(activity);
@@ -38,7 +61,7 @@ module.exports = {
       handleError: (activity, error) => {
         return handleError(activity, error);
       },
-      compareFunctions: require('./compareFunctions'),
+      compare: require('./compare'),
       isErrorResponse: (activity, response, successStatusCodes) => {
         // optional provide list of success status codes
         if (successStatusCodes === undefined) successStatusCodes = [200];
