@@ -31,7 +31,7 @@ module.exports = {
 
     const proxySettings = _activity.Context.ProxyServer;
 
-    if (proxySettings.EnableProxyServer) {
+    if (proxySettings && proxySettings.EnableProxyServer) {
       const proxy = {
         host: proxySettings.host
       };
