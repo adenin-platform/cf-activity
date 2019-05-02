@@ -5,7 +5,6 @@
  * @param {Object} activity - the activity context
  * @param {string} defaultRange - default verbose date range today|tomorrow
  */
-
 module.exports = (activity, defaultRange) => {
   // optional: provide named default range
   if (defaultRange === undefined) defaultRange = 'today';

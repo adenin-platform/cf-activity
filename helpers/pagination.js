@@ -4,7 +4,6 @@
  * retrieves pagination parameters from activity if provided or provides default values, initializes response
  * @param {Object} activity - the activity context
  */
-
 module.exports = (activity) => {
   let action = 'firstpage';
   let page = parseInt(activity.Request.Query.page, 10) || 1;

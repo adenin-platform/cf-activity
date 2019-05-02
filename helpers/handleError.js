@@ -6,7 +6,6 @@
  * @param {error} error - the JavaScript error object
  * @param {Number[]} authRequiresStatusCodes - optional array of statusCodes for success, default for token auth [401]
  */
-
 module.exports = (activity, error, authRequiresStatusCodes) => {
   if (authRequiresStatusCodes === undefined) {
     // if OAuth2 tokens are used status 401 should be mapped to 461 auth required

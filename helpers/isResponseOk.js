@@ -6,7 +6,6 @@
  * @param {Object} response - the got api response
  * @param {Number[]} succssStatusCodes - optional array of statusCode recognized as success, default [200]
  */
-
 module.exports = (activity, response, successStatusCodes) => {
   // optional provide list of success status codes
   if (successStatusCodes === undefined) successStatusCodes = [200];

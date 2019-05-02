@@ -1,5 +1,10 @@
 'use strict';
 
+/**
+ * Check if a nested key is defined on an object
+ * @param {Object} obj - the object on which to check for the key
+ * @param {Object} path - the path to the nested key to check for
+ */
 module.exports = (obj, path) => {
   if (!path) return obj;
   if (!obj) return null;
