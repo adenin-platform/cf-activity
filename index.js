@@ -62,6 +62,7 @@ module.exports = {
         return handleError(activity, error);
       },
       compare: require('./compare'),
+      getObjPath: require('./getObjPath'),
       isErrorResponse: (activity, response, successStatusCodes) => {
         // optional provide list of success status codes
         if (successStatusCodes === undefined) successStatusCodes = [200];
