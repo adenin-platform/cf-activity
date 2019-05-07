@@ -32,23 +32,28 @@ module.exports = {
     const proxySettings = _activity.Context.ProxyServer;
 
     if (proxySettings && proxySettings.EnableProxyServer) {
-      const proxy = {
-        host: proxySettings.host
+      const agent = {
+        ca: proxySettings.certificateFile ? [fs.readFileSync(proxySettings.certificateFile)] : undefined,
+        proxy: {
+          host: proxySettings.host
+        }
       };
 
-      if (proxySettings.port) proxy.port = proxySettings.port;
+      if (proxySettings.port) agent.proxy.port = proxySettings.port;
 
       if (proxySettings.username && proxySettings.password) {
-        proxy.proxyAuth = `${proxySettings.username}:${proxySettings.password}`;
+        agent.proxy.proxyAuth = `${proxySettings.username}:${proxySettings.password}`;
       } else if (proxySettings.username) {
-        proxy.proxyAuth = proxySettings.username;
+        agent.proxy.proxyAuth = proxySettings.username;
       } else if (proxySettings.password) {
-        proxy.proxyAuth = proxySettings.password;
+        agent.proxy.proxyAuth = proxySettings.password;
       }
 
-      _activity.Context.ProxyServer.agent = tunnel.httpsOverHttp({
-        proxy: proxy
-      });
+      if (_activity.Context.connector.endpoint && _activity.Context.connector.endpoint.includes('https://')) {
+        _activity.Context.ProxyServer.agent = tunnel.httpsOverHttp(agent);
+      } else {
+        _activity.Context.ProxyServer.agent = tunnel.httpOverHttp(agent);
+      }
     }
 
     global.$ = {
