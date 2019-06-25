@@ -69,7 +69,7 @@ function extractDateFromString(activity, input) {
   }
 
   try {
-    date = new Date(inputYear, parseInt(inputMonth, 10) - 1, inputDate);
+    date = new Date(inputYear, parseInt(inputMonth) - 1, inputDate);
   } catch (error) {
     $.handleError(activity, error);
   }

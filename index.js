@@ -5,6 +5,11 @@ const fs = require('fs');
 const decache = require('decache');
 const tunnel = require('tunnel');
 
+const {promisify} = require('util');
+
+const exists = promisify(fs.exists);
+const readFile = promisify(fs.readFile);
+
 const handleError = require('./handleError');
 const isResponseOk = require('./isResponseOk');
 const dateRange = require('./dateRange');
@@ -17,13 +22,13 @@ module.exports = {
   dateRange: dateRange,
   pagination: pagination,
   // end legacy
-  initialize: (_activity) => {
+  initialize: async (_activity) => {
     const lang = (_activity.Context.UserLocale || 'en-US').split('-');
     const fname = _activity.Context.ScriptFolder + path.sep + 'lang' + path.sep + lang[0] + '.json';
 
     _activity.Context.Translations = null;
 
-    if (fs.existsSync(fname)) {
+    if (await exists(fname)) {
       if (process.env.NODE_ENV === 'development') decache(fname);
 
       _activity.Context.Translations = require(fname);
@@ -33,7 +38,7 @@ module.exports = {
 
     if (proxySettings && proxySettings.EnableProxyServer) {
       const agent = {
-        ca: proxySettings.certificateFile ? [fs.readFileSync(proxySettings.certificateFile)] : undefined,
+        ca: proxySettings.certificateFile ? [await readFile(proxySettings.certificateFile)] : undefined,
         proxy: {
           host: proxySettings.host
         }

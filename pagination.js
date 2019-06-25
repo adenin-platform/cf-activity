@@ -7,8 +7,8 @@
 
 module.exports = (activity) => {
   let action = 'firstpage';
-  let page = parseInt(activity.Request.Query.page, 10) || 1;
-  let pageSize = parseInt(activity.Request.Query.pageSize, 10) || 20;
+  let page = parseInt(activity.Request.Query.page) || 1;
+  let pageSize = parseInt(activity.Request.Query.pageSize) || 20;
   let nextpage = activity.Request.Query.nextpage;
 
   if (nextpage) {
@@ -33,10 +33,10 @@ module.exports = (activity) => {
       page = null;
       nextpage = raw.substring(raw.indexOf(':') + 1, raw.length);
     } else {
-      page = parseInt(activity.Request.Data.args._page, 10) || 2;
+      page = parseInt(activity.Request.Data.args._page) || 2;
     }
 
-    pageSize = parseInt(activity.Request.Data.args._pageSize, 10) || 20;
+    pageSize = parseInt(activity.Request.Data.args._pageSize) || 20;
     action = 'nextpage';
   }
 
