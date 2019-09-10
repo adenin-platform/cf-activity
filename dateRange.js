@@ -7,14 +7,40 @@
  */
 
 module.exports = (activity, defaultRange) => {
-  // optional: provide named default range
-  if (defaultRange === undefined) defaultRange = 'today';
+
 
   const inputStartDate = activity.Request.Query.startDate;
   const inputEndDate = activity.Request.Query.endDate;
 
   let start = null;
   let end = null;
+
+  // use named defaults if no parameters are provided
+  if (!inputStartDate || !inputEndDate) {
+
+    // do not filter if no default is provided (return min/max date)
+    if (defaultRange === undefined) {
+
+      start = new Date('1800-01-01T00:00:00Z');
+      end = new Date('2199-12-31T23:59:59Z');
+
+    } else {
+
+      switch (defaultRange) {
+
+        case "today":
+          const today = new Date();
+          start = (new Date(today.setHours(0, 0, 0, 0)));
+          end = (new Date(today.setHours(23, 59, 0, 0)));
+          break;
+      }
+
+    }
+
+  }
+
+
+  // *todo* set hours only if not provided already in string
 
   if (inputStartDate) {
     start = extractDateFromString(activity, inputStartDate);
@@ -34,15 +60,6 @@ module.exports = (activity, defaultRange) => {
     }
   }
 
-  if (!start) {
-    const today = new Date();
-    start = (new Date(today.setHours(0, 0, 0, 0)));
-  }
-
-  if (!end) {
-    const today = new Date();
-    end = (new Date(today.setHours(23, 59, 0, 0)));
-  }
 
   return {
     startDate: start.toISOString(),
