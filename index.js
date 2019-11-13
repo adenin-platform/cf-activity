@@ -87,6 +87,12 @@ module.exports = {
         logger.error(activity.Response.Data.ErrorText);
 
         return true;
+      },
+      selectionError: (activity, message) => {
+        activity.Response.ErrorCode = 500;
+        activity.Response.Data = {
+          ErrorText: message
+        };
       }
     };
 
