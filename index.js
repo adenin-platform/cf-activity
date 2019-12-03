@@ -99,14 +99,14 @@ module.exports = {
       avatarLink: (text, email) => {
         const baseUrl = _activity.Context.connector.host.baseUrl;
 
-        if (!text) return `${baseUrl}avatar?initials=%20&color=e0e0e0`;
+        if (!text) return `${baseUrl}avatar?color=e0e0e0`;
 
         if (text.length > 2) {
           const split = text.split(' ');
           text = '';
 
           for (let i = 0; i < split.length && i < 3; i++) {
-            text += split[i][0];
+            if (split[i] && split[i][0]) text += split[i][0];
           }
         }
 
@@ -121,7 +121,7 @@ module.exports = {
 
         const hash = md5.update(email).digest('hex');
 
-        return `${gravatarBaseUrl}${hash}?s=192&d=${platformAvatar}`;
+        return `${gravatarBaseUrl}${hash}?s=192&d=${encodeURIComponent(platformAvatar)}`;
       }
     };
 
