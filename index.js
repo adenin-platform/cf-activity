@@ -99,7 +99,7 @@ module.exports = {
       avatarLink: (text, email) => {
         const baseUrl = _activity.Context.connector.host.baseUrl;
 
-        if (!text) return `${baseUrl}avatar?color=e0e0e0`;
+        if (!text) return `${baseUrl}avatar`;
 
         if (text.length > 2) {
           const split = text.split(' ');
@@ -110,7 +110,7 @@ module.exports = {
           }
         }
 
-        const platformAvatar = `${baseUrl}avatar?initials=${text}`;
+        const platformAvatar = `${baseUrl}avatar/${text}`;
 
         if (!email || (typeof email !== 'string' && !(email instanceof String))) return platformAvatar;
 
