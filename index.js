@@ -1,7 +1,9 @@
 'use strict';
 
-const path = require('path');
+const crypto = require('crypto');
 const fs = require('fs');
+const path = require('path');
+
 const decache = require('decache');
 const tunnel = require('tunnel');
 
@@ -10,9 +12,9 @@ const {promisify} = require('util');
 const exists = promisify(fs.exists);
 const readFile = promisify(fs.readFile);
 
+const dateRange = require('./dateRange');
 const handleError = require('./handleError');
 const isResponseOk = require('./isResponseOk');
-const dateRange = require('./dateRange');
 const pagination = require('./pagination');
 
 module.exports = {
@@ -93,6 +95,33 @@ module.exports = {
         activity.Response.Data = {
           ErrorText: message
         };
+      },
+      avatarLink: (text, email) => {
+        const baseUrl = _activity.Context.connector.host.baseUrl;
+
+        if (!text) return `${baseUrl}avatar?initials=%20&color=e0e0e0`;
+
+        if (text.length > 2) {
+          const split = text.split(' ');
+          text = '';
+
+          for (let i = 0; i < split.length && i < 3; i++) {
+            text += split[i][0];
+          }
+        }
+
+        const platformAvatar = `${baseUrl}avatar?initials=${text}`;
+
+        if (!email || (typeof email !== 'string' && !(email instanceof String))) return platformAvatar;
+
+        const gravatarBaseUrl = 'https://www.gravatar.com/avatar/';
+        const md5 = crypto.createHash('md5');
+
+        email = email.toLowerCase().trim();
+
+        const hash = md5.update(email).digest('hex');
+
+        return `${gravatarBaseUrl}${hash}?s=192&d=${platformAvatar}`;
       }
     };
 
