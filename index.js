@@ -17,6 +17,8 @@ const handleError = require('./handleError');
 const isResponseOk = require('./isResponseOk');
 const pagination = require('./pagination');
 
+const isAscii = /^[ -~]+$/;
+
 module.exports = {
   // legacy
   handleError: handleError,
@@ -110,9 +112,9 @@ module.exports = {
           }
         }
 
-        const platformAvatar = `${baseUrl}avatar/${text}`;
+        const platformAvatar = `${baseUrl}avatar/${encodeURIComponent(text)}`;
 
-        if (!email || (typeof email !== 'string' && !(email instanceof String))) return platformAvatar;
+        if (!email || (typeof email !== 'string' && !(email instanceof String)) || !isAscii.test(text)) return platformAvatar;
 
         const gravatarBaseUrl = 'https://www.gravatar.com/avatar/';
         const md5 = crypto.createHash('md5');
