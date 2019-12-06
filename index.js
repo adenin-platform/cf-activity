@@ -16,6 +16,7 @@ const dateRange = require('./dateRange');
 const handleError = require('./handleError');
 const isResponseOk = require('./isResponseOk');
 const pagination = require('./pagination');
+const getObjPath = require('./getObjPath');
 
 const isAscii = /^[ -~]+$/;
 
@@ -37,6 +38,10 @@ module.exports = {
 
       _activity.Context.Translations = require(fname);
     }
+
+    const connectorLogoUrl = getObjPath(_activity, 'Context.connector.host.connectorLogoUrl');
+
+    if (connectorLogoUrl) _activity.Response.Data.thumbnail = connectorLogoUrl;
 
     const proxySettings = _activity.Context.ProxyServer;
 
@@ -76,7 +81,7 @@ module.exports = {
         return handleError(activity, error);
       },
       compare: require('./compare'),
-      getObjPath: require('./getObjPath'),
+      getObjPath: getObjPath,
       isErrorResponse: (activity, response, successStatusCodes) => {
         // optional provide list of success status codes
         if (successStatusCodes === undefined) successStatusCodes = [200];
