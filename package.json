@@ -1,6 +1,6 @@
 {
   "name": "@adenin/cf-activity",
-  "version": "3.3.3",
+  "version": "3.3.4",
   "description": "Helper scripts for adenin cloud functions",
   "main": "index.js",
   "repository": {
