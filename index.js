@@ -99,7 +99,9 @@ module.exports = {
         };
       },
       avatarLink: (text, email) => {
-        const baseUrl = _activity.Context.connector.host.baseUrl;
+        let baseUrl = _activity.Context.connector.host.baseUrl;
+
+        if (baseUrl.charAt(baseUrl.length - 1) !== '/') baseUrl += '/';
 
         if (!text) return `${baseUrl}avatar`;
 
