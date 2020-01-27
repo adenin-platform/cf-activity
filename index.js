@@ -104,9 +104,7 @@ module.exports = {
         };
       },
       avatarLink: (text, email) => {
-        if (!_activity.Context.connector.host) return;
-
-        let baseUrl = _activity.Context.connector.host.baseUrl;
+        let baseUrl = _activity.Context.connector.host ? _activity.Context.connector.host.baseUrl : 'https://app.adenin.com/';
 
         if (baseUrl.charAt(baseUrl.length - 1) !== '/') baseUrl += '/';
 
